@@ -1,4 +1,3 @@
-'use strict';
 const SETTING = {
     start: false,
     score: 0,
@@ -40,23 +39,22 @@ const keys = {
     ArrowLeft: false
 };
 
-const getLocalStorage  = () => parseInt(localStorage.getItem('nfjs_score', SETTING.score));
+const result = parseInt(localStorage.getItem('nfjs_score', SETTING.score));
 
-topScore.textContent = getLocalStorage() ? getLocalStorage() : 0;
+topScore.textContent = result ? result : 0;
     
 const addLocalStorage = () => {
-    const result = getLocalStorage();
-    if (!result || result < SETTING.score) {
+    if (result < SETTING.score) {
         localStorage.setItem('nfjs_score', SETTING.score);
         topScore.textContent = SETTING.score;
     }
 };
 
-const getQuantityElements = heightElement => {
+function getQuantityElements(heightElement) {
     return (gameArea.offsetHeight / heightElement + 1);
-};
+}
 
-const startGame = event => {
+function startGame(event) {
     const target = event.target;
     if (target === start) {return;}
 
@@ -111,9 +109,9 @@ const startGame = event => {
     SETTING.x = car.offsetLeft;
     SETTING.y = car.offsetTop;
     requestAnimationFrame(playGame);
-};
+}
 
-const playGame = () => {
+function playGame() {
     
     if (SETTING.start) {
         SETTING.level = Math.floor(SETTING.score / 1000);
@@ -142,23 +140,23 @@ const playGame = () => {
         car.style.top = SETTING.y + 'px';
         requestAnimationFrame(playGame);
     }
-};
+}
 
-const startRun = event => {
+function startRun(event) {
     if (keys.hasOwnProperty(event.key)) {
         event.preventDefault();
         keys[event.key] = true;
     }
-};
+}
 
-const stopRun = event => {
+function stopRun(event) {
     if (keys.hasOwnProperty(event.key)) {
         event.preventDefault();
         keys[event.key] = false;
     }
-};
+}
 
-const moveRoad = () => {
+function moveRoad() {
     let lines = document.querySelectorAll('.line');
     lines.forEach(function (line) {
         line.y += SETTING.speed;
@@ -167,9 +165,9 @@ const moveRoad = () => {
             line.y = -HEIGHT_ELEM;
         }
     });
-};
+}
 
-const moveEnemy = () => {
+function moveEnemy() {
     let enemy = document.querySelectorAll('.enemy');
     const randonEnemy = Math.floor(Math.random() * MAX_ENEMY);
     enemy.forEach(function (item) {
@@ -184,7 +182,7 @@ const moveEnemy = () => {
             start.style.top = score.offsetHeight;
             addLocalStorage();
             audio.pause();
-            /*crash.play();*/
+           /* crash.play();*/
         }
         item.y += SETTING.speed / 2;
         item.style.top = item.y + 'px';
@@ -198,7 +196,7 @@ const moveEnemy = () => {
 
     });
 
-};
+}
 
 car.classList.add('car');
 start.addEventListener('click', startGame);
